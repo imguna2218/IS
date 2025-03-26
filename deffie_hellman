@@ -1,0 +1,32 @@
+import java.math.BigInteger;
+
+class DiffieHellman {   
+    public static void main(String args[]) {   
+        int p = 23; // Public prime number
+        int g = 5;  // Primitive root
+        int x = 4;  // Alice's private key
+        int y = 3;  // Bob's private key
+        
+        // Compute public keys
+        BigInteger aliceSends = BigInteger.valueOf(g).modPow(BigInteger.valueOf(x), BigInteger.valueOf(p));
+        BigInteger bobSends = BigInteger.valueOf(g).modPow(BigInteger.valueOf(y), BigInteger.valueOf(p));
+
+        // Compute shared secret keys
+        BigInteger aliceComputes = bobSends.modPow(BigInteger.valueOf(x), BigInteger.valueOf(p));
+        BigInteger bobComputes = aliceSends.modPow(BigInteger.valueOf(y), BigInteger.valueOf(p));
+
+        System.out.println("Simulation of Diffie-Hellman Key Exchange Algorithm");
+        System.out.println("---------------------------------------------------");
+        System.out.println("Alice Sends: " + aliceSends);
+        System.out.println("Bob Sends: " + bobSends);
+        System.out.println("Alice Computes: " + aliceComputes);
+        System.out.println("Bob Computes: " + bobComputes);
+        
+        // Check if the shared secrets match
+        if (aliceComputes.equals(bobComputes)) {
+            System.out.println("Success: Shared Secret Matches! " + aliceComputes);
+        } else {
+            System.out.println("Error: Shared Secret does not Match");
+        }
+    }
+}
