@@ -1,74 +1,69 @@
-class RailFenceCipherHelper { 
-    int depth;  
-
-    // Encode (Encryption) Method
-    String encode(String msg, int depth) { 
-        int r = depth;  
-        int l = msg.length(); 
-        int c = (int) Math.ceil((double) l / depth);  // Ensure proper column calculation
-        int k = 0;  
-        char[][] mat = new char[r][c]; 
-        String enc = ""; 
-
-        // Fill the matrix column-wise
-        for (int i = 0; i < c; i++) { 
-            for (int j = 0; j < r; j++) {  
-                if (k < l) {  
-                    mat[j][i] = msg.charAt(k++);  
-                } else { 
-                    mat[j][i] = 'X';  // Padding if necessary
-                }  
-            }  
-        }  
-
-        // Read the matrix row-wise
-        for (int i = 0; i < r; i++) {  
-            for (int j = 0; j < c; j++) {  
-                enc += mat[i][j];  
-            }  
-        }  
-        return enc;  
-    }  
-
-    // Decode (Decryption) Method
-    String decode(String encmsg, int depth) { 
-        int r = depth;  
-        int l = encmsg.length();  
-        int c = l / depth;  
-        int k = 0;  
-        char[][] mat = new char[r][c];  
-        String dec = "";  
+class RailfenceCipherHelper {
+    public String encode(String msg, int depth) throws Exception {
+        int r = depth;
+        int l = msg.length();
+        int c = (int) Math.ceil((double) l / r);
+        int k = 0;
+        char[][] mat = new char[r][c];
+        String enc = "";
 
         // Fill the matrix row-wise
-        for (int i = 0; i < r; i++) {  
-            for (int j = 0; j < c; j++) {  
-                mat[i][j] = encmsg.charAt(k++);  
-            }  
-        }  
+        for (int i = 0; i < c; i++) {
+            for (int j = 0; j < r; j++) {
+                if (k < l) {
+                    mat[j][i] = msg.charAt(k++);
+                } else {
+                    mat[j][i] = 'X'; // Fill with 'X' if message is shorter
+                }
+            }
+        }
 
-        // Read the matrix column-wise
-        for (int i = 0; i < c; i++) {  
-            for (int j = 0; j < r; j++) {  
-                dec += mat[j][i];  
-            }  
-        }  
-        return dec;  
-    }  
-}  
+        // Read the matrix column-wise for encryption
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                enc += mat[i][j];
+            }
+        }
+        return enc;
+    }
 
-public class RailFenceCipher {  
-    public static void main(String[] args) {  
-        RailFenceCipherHelper rf = new RailFenceCipherHelper();  
+    public String decode(String encmsg, int depth) throws Exception {
+        int r = depth;
+        int l = encmsg.length();
+        int c = l / r;
+        int k = 0;
+        char[][] mat = new char[r][c];
+        String dec = "";
 
-        String msg = "INFORMATIONSECURITY";  
-        int depth = 2;  
+        // Fill the matrix column-wise
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                mat[i][j] = encmsg.charAt(k++);
+            }
+        }
 
-        String enc = rf.encode(msg, depth);  
-        String dec = rf.decode(enc, depth);  
+        // Read the matrix row-wise for decryption
+        for (int i = 0; i < c; i++) {
+            for (int j = 0; j < r; j++) {
+                dec += mat[j][i];
+            }
+        }
+        return dec;
+    }
+}
 
-        System.out.println("Simulating Rail Fence Cipher\n-------------------------");  
-        System.out.println("Input Message    : " + msg);  
-        System.out.println("Encrypted Message: " + enc);  
-        System.out.println("Decrypted Message: " + dec);  
-    }  
+public class Main {
+    public static void main(String[] args) throws Exception {
+        RailfenceCipherHelper rf = new RailfenceCipherHelper();
+        String msg = "INFORMATION SECURITY";
+        int depth = 2;
+
+        String enc = rf.encode(msg, depth);
+        String dec = rf.decode(enc, depth);
+
+        System.out.println("Simulating Railfence Cipher\n-------------------------");
+        System.out.println("Input Message       : " + msg);
+        System.out.println("Encrypted Message   : " + enc);
+        System.out.println("Decrypted Message   : " + dec);
+    }
 }
